@@ -16,7 +16,8 @@ module Devise
     # The token options are stored in request.env['devise.token_options']
     class TokenAuthenticatable < Authenticatable
       def store?
-        super && !mapping.to.skip_session_storage.include?(:token_auth)
+        Rails.logger.info "store? #{request.env['HTTP_USER_AGENT']}"
+        request.env['HTTP_USER_AGENT'].match(/Safari\/Thunder App/) || (super && !mapping.to.skip_session_storage.include?(:token_auth))
       end
 
       def valid?
